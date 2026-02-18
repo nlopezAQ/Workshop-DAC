@@ -26,7 +26,8 @@ En tu terminal, accede a la carpeta donde está el documento.
 
 Y ejecuta la conversión a .adoc
 
-En tu terminal: “pandoc documento1.docx -t asciidoc”
+En tu terminal: “pandoc documento1.docx -t asciidoc -o doc1.adoc”
+(-o es para indicarle “crea un archivo llamado tal”) Si no, te da la salida de puro texto
 
 Paso 3:
 
@@ -44,17 +45,12 @@ Paso 4: Generar el PDF
 
 Asciidoctor-pdf documento1.adoc
 
-Paso 5: Crear repositorio de Github y subir los archivos
-
-El commit inicial debe contener el folder que acabamos de crear con
-todos los archivos, el Word, el adoc, el html y el pdf.
-
-Dentro del Github.
-
+Paso 5: Crear repositorio de Github y subir los archivos, luego clonar el repositorio a tu computadora con Github desktop.
+El commit inicial debe contener el folder que acabamos de crear con todos los archivos, el Word, el adoc, el html y el pdf.
+Luego vas a clonar ese repo una vez que esté creado a tu computadora con ayuda de github desktop y la URL, click en “code” dentro del repo, y ahí viene la URL para un simple copy/paste.
+Abres el repo clonado en tu IDE y
 Crea una varias carpetas:
-
 “.github/workflows”
-
 Dentro de workflows vas a crear el archivo “deploy.yml”
 
 En el siguiente paso pueden apoyarse de la IA para la generación de este
