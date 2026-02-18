@@ -1,0 +1,193 @@
+Pre-requisitos:
+
+Obligatorio
+
+Cuenta GitHub
+
+Pandoc
+
+Ruby
+
+AsciiDoctor y AsciiDoctor PDF
+
+IDE
+
+Opcional
+
+Git
+
+Paso 1:
+
+Crea o ubica tu documento de Word “documento1.docx”
+
+Paso 2:
+
+En tu terminal, accede a la carpeta donde está el documento.
+
+Y ejecuta la conversión a .adoc
+
+En tu terminal: “pandoc documento1.docx -t asciidoc”
+
+Paso 3:
+
+Generas un HTML local para que lo subas a la url o a la web
+
+En tu terminal: “asciidoctor documento1.adoc”
+
+Puedes abrirlo en navegador para verificarlo
+
+start index.html ++#++ Windows
+
+open index.html ++#++ Mac
+
+Paso 4: Generar el PDF
+
+Asciidoctor-pdf documento1.adoc
+
+Paso 5: Crear repositorio de Github y subir los archivos
+
+El commit inicial debe contener el folder que acabamos de crear con
+todos los archivos, el Word, el adoc, el html y el pdf.
+
+Dentro del Github.
+
+Crea una varias carpetas:
+
+“.github/workflows”
+
+Dentro de workflows vas a crear el archivo “deploy.yml”
+
+En el siguiente paso pueden apoyarse de la IA para la generación de este
+archivo, yaml es un lenguaje muy estricto en cuanto a los espacios,
+tabulaciones, puntuaciones y texto. No tengan miedo de cagarla.
+
+Contenido (respetando mucho los espacios y tabulaciones):
+
+name: (deploy o lo que quieras)
+
+++#++instrucciónes cuando?
+
+on:
+
+push:
+
+branches:
+
+- main
+
+++#++Necesitas darle permisos
+
+permissions:
+
+contents: read
+
+pages: write
+
+id-token: write
+
+++#++Creas un build y especificas OS
+
+jobs:
+
+build:
+
+runs-on: ubuntu-latest
+
+++#++Indicas que use github actions y los pasos del build
+
+steps:
+
+- uses: actions/checkout@v4
+
+++#++instala el Asciidoctor en la maquina de github para que haga la
+conversión automática cuando tu subas el .adoc al repo.
+
+- name: Install Asciidoctor
+
+run: ++|++
+
+sudo apt-get update
+
+sudo apt-get install -y asciidoctor ruby
+
+sudo gem install asciidoctor-pdf
+
+++#++crea el build en pages para generar una pagina html web
+
+- name: Build HTML
+
+run: ++|++
+
+mkdir public
+
+asciidoctor docs/index.adoc -D public
+
+++#++crea el documento en pdf en un directorio
+
+- name: Build PDF
+
+run: ++|++
+
+mkdir -p public/pdf
+
+asciidoctor-pdf docs/index.adoc -D public/pdf
+
+++#++sube lo que acabas de configurar a la pagina web que se creo.
+
+- uses: actions/upload-pages-artifact@v3
+
+with:
+
+path: public
+
+++#++configuración del deploy y failsafe por si algo falla
+
+deploy:
+
+needs: build
+
+runs-on: ubuntu-latest
+
+environment:
+
+name: github-pages
+
+url: $++{{++ steps.deployment.outputs.page++_++url }}
+
+steps:
+
+- id: deployment
+
+uses: actions/deploy-pages@v4
+
+Paso 6: En cuanto configures este archivo en tu IDE, lo subes al
+repositorio y deberías ver que github actions va a estar trabajando.
+
+Paso 7: Asegurarte de que pages está activado: +
+En tu repositorio – Settings – Code and automation – Pages.
+
+Source = github actions.
+
+Cómo buena practica esto y los commits se hacen en una Branch para no
+afectar el main. +
+Puedes configurar el pages para que tome la Branch (y no vayas a hacerle
+merge)
+
+Y desde esa Branch se publique la pag web.
+
+Una vez completado:
+
+Acceden al repositorio via navegador web. +
+scrollean a la parte inferior derecha.
+
+Dan click en “deployments” y ya van a ver el enlace a la página web que
+se generó.
+
+Cómo la creamos mediante HTML en la configuración del YAML.
+
+Podemos agregarle un archivo CSS para darle formato, colores,
+tipografía, etc.
+
+Esto es diseño web básico.
+
+Por su atención, gracias.
