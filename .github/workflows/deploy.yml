@@ -26,12 +26,12 @@ jobs:
       - name: Build HTML
         run: |
           mkdir public
-          asciidoctor docs/index.adoc -D public
+          asciidoctor docs/instrucciones.adoc -D public
 
       - name: Build PDF
         run: |
           mkdir -p public/pdf
-          asciidoctor-pdf docs/index.adoc -D public/pdf
+          asciidoctor-pdf docs/instrucciones.adoc -D public/pdf
 
       - uses: actions/upload-pages-artifact@v3
         with:
